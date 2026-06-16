@@ -2,35 +2,45 @@ const http = require("http");
 const fs = require("fs");
 const url = require("url"); 
 
-const myServer = http.createServer((req,res)=>{
+const express = require("express");
+const app = express();
 
-    if(req.url==='/favicon.ico') return res.end();
+app.get('/',(req,res)=>{
+    return res.send('hello Homepage'); 
+})
+app.get('/about',(req,res)=>{
+    return res.send(`Hello ${req.query.name}`); 
+})
 
-    const log = `${Date.now()}: ${req.url} New req received\n`;
-    const myUrl = url.parse(req.url , true);
-    console.log(myUrl);
+// const myServer = http.createServer((req,res)=>{
 
-    fs.appendFile('log.txt', log , (err,data)=>{
+//     if(req.url==='/favicon.ico') return res.end();
+
+//     const log = `${Date.now()}: ${req.url} New req received\n`;
+//     const myUrl = url.parse(req.url , true);
+//     console.log(myUrl);
+
+//     fs.appendFile('log.txt', log , (err,data)=>{
         
-        switch(myUrl.pathname){
-            case '/':res.end("Homepage");
-            break;
-            case '/about':
+//         switch(myUrl.pathname){
+//             case '/':res.end("Homepage");
+//             break;
+//             case '/about':
 
-            const username = myUrl.query.myname;    
-            res.end(`Hi,${username}`);
-            break;
+//             const username = myUrl.query.myname;    
+//             res.end(`Hi,${username}`);
+//             break;
             
-            case '/search':
-            const search = myUrl.query.search_query;
-            res.end('here are your result for '+ search);
+//             case '/search':
+//             const search = myUrl.query.search_query;
+//             res.end('here are your result for '+ search);
 
-            default : 
-            res.end("404 not found");
-        }
+//             default : 
+//             res.end("404 not found");
+//         }
   
-    });
+//     });
 
-});
+// });
 
-myServer.listen(8000,()=> console.log("Server Started"));
+app.listen(8000,()=> console.log("Server Started"));
